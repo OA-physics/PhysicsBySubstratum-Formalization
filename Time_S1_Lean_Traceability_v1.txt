@@ -1,0 +1,853 @@
+Time — S1 to Lean Traceability Registry
+=========================================
+
+Purpose
+-------
+For every important Definition, Lemma, Proposition, Theorem, Remark, and
+Corollary in S1, identify one Lean declaration (or a small public interface)
+that serves as its manuscript-facing formal counterpart.
+
+The registry also records a small number of unnumbered semantic bridges whose
+meaning is used by the numbered proof.  These are kept explicit so that a
+semantic encoding choice cannot be mistaken for a new physical axiom or for a
+derived theorem.
+
+A manuscript-facing interface should be recognizable beside the corresponding
+S1 statement.  Implementation helpers may sit below the interface declaration,
+but the manuscript statement should not have to be reconstructed from unrelated
+Lean internals.
+
+File field
+----------
+The file field gives the project source file in which the principal interface
+is defined, independent of temporary local filename suffixes.
+
+Status convention
+-----------------
+MATCH     = manuscript statement and Lean interface have been checked and agree.
+ENCODING  = explicit semantic or representational choice; deductive use is
+            checked, while adequacy of the interpretation remains conceptual.
+SCOPE     = deliberate manuscript statement outside the present Lean theorem
+            layer; the boundary itself has been checked for consistency.
+CHECK     = plausible interface identified, but detailed comparison remains open.
+GAP       = no adequate manuscript-facing Lean interface identified.
+TODO      = interface identified, but dependency-report or manuscript cleanup
+            remains open.
+
+CURRENT REGISTRY
+================
+
+S1 statement:
+  Imported SBI foundation
+Lean interface:
+  Time-facing SBI boundary interfaces; imported `SBILeanProject/SBI/` declarations
+File:
+  SBI/ via Time imports
+Status:
+  MATCH
+Note:
+  The Time development reuses the verified SBI substratum, configuration, deformation, incidence-network, domain, and persistence structures. The generated SBI-boundary report records the imported interface explicitly.
+
+S1 statement:
+  Definition 1 — Operationally accessible elementary rearrangement
+Lean interface:
+  OperationalAccessibilitySemantics / AccessibleStep
+File:
+  Basic.lean
+Status:
+  MATCH
+Note:
+  `accessibleStep_admissible` makes operational accessibility a refinement of SBI admissibility.
+
+S1 statement:
+  Definition 2 — Operational reachability
+Lean interface:
+  OperationalReachability
+File:
+  Basic.lean
+Status:
+  MATCH
+Note:
+  Finite reflexive-transitive closure of accessible elementary steps.
+
+S1 statement:
+  Lemma 1 — Reflexivity of operational reachability
+Lean interface:
+  operationalReachability_refl
+File:
+  Basic.lean
+Status:
+  MATCH
+Note:
+  Zero-step reachability.
+
+S1 statement:
+  Lemma 2 — Transitivity of operational reachability
+Lean interface:
+  operationalReachability_trans
+File:
+  Basic.lean
+Status:
+  MATCH
+Note:
+  Finite accessible paths compose.
+
+S1 statement:
+  Proposition 1 — Operational reachability implies admissible deformation
+Lean interface:
+  operationalReachability_is_admissibleDeformation
+File:
+  Basic.lean
+Status:
+  MATCH
+Note:
+  The converse is intentionally not asserted.
+
+S1 statement:
+  Definition 3 — Reversible equivalence
+Lean interface:
+  ReversibleEquivalent / ReversibleClass / reversibleClassOf
+File:
+  Reachability.lean
+Status:
+  MATCH
+Note:
+  Mutual operational reachability; quotient classes are supplied by `reversibleSetoid`.
+
+S1 statement:
+  Lemma 3 — Reversible equivalence relation
+Lean interface:
+  reversibleEquivalent_refl / reversibleEquivalent_symm / reversibleEquivalent_trans
+File:
+  Reachability.lean
+Status:
+  MATCH
+Note:
+  Packaged into `reversibleSetoid`.
+
+S1 statement:
+  Definition 4 — Asymmetric operational reachability
+Lean interface:
+  AsymmetricReachability
+File:
+  Reachability.lean
+Status:
+  MATCH
+Note:
+  Forward operational reachability with failure of reverse reachability.
+
+S1 statement:
+  Lemma 4 — Asymmetric reachability excludes reversible equivalence
+Lean interface:
+  asymmetricReachability_not_reversibleEquivalent
+File:
+  Reachability.lean
+Status:
+  MATCH
+
+S1 statement:
+  Lemma 5 — Representative independence
+Lean interface:
+  asymmetricReachability_iff_of_reversibleEquivalent
+File:
+  Reachability.lean
+Status:
+  MATCH
+Note:
+  Supporting forward theorem: `asymmetricReachability_of_representatives`.
+
+S1 statement:
+  Definition 5 — Irreversible precedence
+Lean interface:
+  IrreversiblePrecedence / irreversiblePrecedence_classOf_iff
+File:
+  Reachability.lean
+Status:
+  MATCH
+Note:
+  Defined on reversible quotient classes through asymmetric reachability.
+
+S1 statement:
+  Lemma 6 — Transitivity of asymmetric reachability
+Lean interface:
+  asymmetricReachability_trans
+File:
+  Reachability.lean
+Status:
+  MATCH
+
+S1 statement:
+  Theorem 2 — Irreversible precedence is a strict partial order
+Lean interface:
+  irreversiblePrecedence_strictPartialOrder
+File:
+  TemporalOrder.lean
+Status:
+  MATCH
+Note:
+  Built from `irreversiblePrecedence_irrefl` and `irreversiblePrecedence_trans`; also included in `temporalOrder_characterization`.
+
+S1 statement:
+  Remark 1 — Irreversible precedence need not be total
+Lean interface:
+  No dedicated theorem required
+File:
+  TemporalOrder.lean
+Status:
+  MATCH
+Note:
+  The global relation is only a strict partial order. Totality appears only after selecting an `OrderedPhysicalHistory`.
+
+S1 statement:
+  Definition 6 — Operational reconstruction
+Lean interface:
+  OperationallyReconstructible
+File:
+  Records.lean
+Status:
+  MATCH
+Note:
+  Exactly reverse operational reachability.
+
+S1 statement:
+  Definition 7 — Operational irreversibility
+Lean interface:
+  OperationallyIrreversible
+File:
+  Records.lean
+Status:
+  MATCH
+Note:
+  `operationallyIrreversible_iff_asymmetricReachability` proves equivalence with asymmetric reachability.
+
+S1 statement:
+  Definition 8 — Record feature
+Lean interface:
+  RecordFeatureSemantics
+File:
+  Records.lean
+Status:
+  ENCODING
+Note:
+  Semantic bundle for presence, distinction, and elimination with dependencies.
+
+S1 statement:
+  Definition 9 — Persistent record
+Lean interface:
+  PersistentRecord
+File:
+  Records.lean
+Status:
+  MATCH
+Note:
+  No existence assertion is built into the structure.
+
+S1 statement:
+  Lemma 7 — Persistent records imply operational irreversibility
+Lean interface:
+  PersistentRecord.operationallyIrreversible / PersistentRecord.asymmetricReachability
+File:
+  Records.lean
+Status:
+  MATCH
+
+S1 statement:
+  Lemma 8 — Complete record erasure is not operationally reachable
+Lean interface:
+  PersistentRecord.elimination_not_reachable
+File:
+  Records.lean
+Status:
+  MATCH
+
+S1 statement:
+  Corollary 3.1 — Persistent records induce irreversible precedence
+Lean interface:
+  PersistentRecord.irreversiblePrecedence
+File:
+  Records.lean
+Status:
+  MATCH
+Note:
+  Also packaged by `persistentRecord_consequences`.
+
+S1 statement:
+  Local record-formation semantic bridge
+Lean interface:
+  LocalRecordFormationSemantics
+File:
+  RecordFormation.lean
+Status:
+  ENCODING
+Note:
+  Makes support containment, local reconstruction, and persistence-compatible local realization explicit.
+
+S1 statement:
+  Definition 10 — Persistence-relevant relational support
+Lean interface:
+  LocalRecordFormationSemantics.SupportContainedIn
+File:
+  RecordFormation.lean
+Status:
+  ENCODING
+
+S1 statement:
+  Definition 11 — Local reconstruction set
+Lean interface:
+  LocalReconstructionSet
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+
+S1 statement:
+  Definition 12 — Persistence-compatible configuration set
+Lean interface:
+  PersistenceCompatibleSet
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+
+S1 statement:
+  Definition 13 — Local reconstruction–persistence incompatibility
+Lean interface:
+  LocalReconstructionPersistenceIncompatible
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+Note:
+  Empty intersection represented as nonexistence of a configuration satisfying both predicates.
+
+S1 statement:
+  Lemma 9 — Local reconstruction obstruction
+Lean interface:
+  local_reconstruction_obstruction
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+Note:
+  The result is local and does not itself claim global irreversibility.
+
+S1 statement:
+  Lemma 10 — Local incompatibility forces nonlocal resolution
+Lean interface:
+  reconstruction_requires_nonlocal_resolution / ReconstructionRequiresNonlocalResolution
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+
+S1 statement:
+  Relational-domain semantic bridge
+Lean interface:
+  RelationalDomainSemantics
+File:
+  RecordFormation.lean
+Status:
+  ENCODING
+Note:
+  Supplies the meaning of a local conjunction belonging to a relational domain; no geometry or time is added.
+
+S1 statement:
+  Definition 14 — Relational adjacency
+Lean interface:
+  RelationallyAdjacent
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+Note:
+  Shared direct relation.
+
+S1 statement:
+  Definition 15 — Relational incidence chain
+Lean interface:
+  RelationalIncidenceChain
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+Note:
+  Exact-length chain in the incidence structure.
+
+S1 statement:
+  Definition 16 — Relational propagation depth
+Lean interface:
+  RelationalPropagationDepth / RelationalPropagationDepthToDomain / RelationalShell
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+Note:
+  Depth is partial when connectivity is not established; it is not a background metric.
+
+S1 statement:
+  Definition 17 — Limiting relational propagation front
+Lean interface:
+  LimitingPropagationFront
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+
+S1 statement:
+  Definition 18 — Locally mediated reconstruction propagation
+Lean interface:
+  LocallyMediatedReconstructionPropagation
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+Note:
+  Physical condition; stage index counts relational propagation steps only.
+
+S1 statement:
+  Lemma 11 — One-step propagation bound
+Lean interface:
+  withinRelationalDepth_of_adjacent
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+
+S1 statement:
+  Lemma 12 — Bound on reconstruction support
+Lean interface:
+  LocallyMediatedReconstructionPropagation.support_within_bound
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+
+S1 statement:
+  Definition 19 — Limiting dependency propagation
+Lean interface:
+  LimitingDependencyPropagation
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+Note:
+  Physical condition.
+
+S1 statement:
+  Lemma 13 — Persistence of a positive propagation lag
+Lean interface:
+  reconstruction_lag_remains_strict
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+Note:
+  Technical arithmetic lemma; retained in audit but suppressed from the manuscript-facing graph.
+
+S1 statement:
+  Lemma 14 — No overtaking of a limiting relational front
+Lean interface:
+  LocallyMediatedReconstructionPropagation.cannot_overtake_limiting_front
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+Note:
+  `disjoint_from_limiting_dependency` packages the result against a limiting dependency propagation.
+
+S1 statement:
+  Definition 20 — Dependency-mediated outward recovery
+Lean interface:
+  DependencyMediatedOutwardRecovery
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+Note:
+  Explicit physical condition selecting the record-forming cases; not universal.
+
+S1 statement:
+  Lemma 15 — Dependency recovery required
+Lean interface:
+  reconstructionRequiresDependencyRecovery_of_local_obstruction
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+Note:
+  Returns `ReconstructionRequiresDependencyRecovery`; the broad recovery requirement is derived rather than independently assumed.
+
+S1 statement:
+  Theorem 3 — Failure of operational reconstruction
+Lean interface:
+  ReconstructionRequiresDependencyRecovery.not_operationally_reconstructible
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+Note:
+  Depends on the derived recovery requirement and no-overtaking.
+
+S1 statement:
+  Theorem 4 — Formation of persistent records
+Lean interface:
+  persistentRecord_of_limiting_dependency
+File:
+  RecordFormation.lean
+Status:
+  MATCH
+Note:
+  `persistentRecord_consequences` is the manuscript-level bundle theorem.
+
+S1 statement:
+  Definition 21 — Ordered physical history
+Lean interface:
+  OrderedPhysicalHistory
+File:
+  TemporalOrder.lean
+Status:
+  MATCH
+Note:
+  Selected chain within the global strict partial order.
+
+S1 statement:
+  Definition 22 — History precedence
+Lean interface:
+  HistoryPrecedence
+File:
+  TemporalOrder.lean
+Status:
+  MATCH
+
+S1 statement:
+  Theorem 5 — Strict total order on an ordered physical history
+Lean interface:
+  historyPrecedence_isStrictTotalOrder
+File:
+  TemporalOrder.lean
+Status:
+  MATCH
+
+S1 statement:
+  Definition 23 — At-most-countable physical history
+Lean interface:
+  HistoryAtMostCountable
+File:
+  TemporalOrder.lean
+Status:
+  MATCH
+Note:
+  Representation condition when invoked.
+
+S1 statement:
+  Theorem 6 — Real-valued representation of temporal order
+Lean interface:
+  history_orderEmbedsIntoReal
+File:
+  TemporalOrder.lean
+Status:
+  MATCH
+Note:
+  Also packaged by `temporalOrder_characterization`.
+
+S1 statement:
+  Theorem 7 — Strictly monotone reparametrization
+Lean interface:
+  strictMono_reparametrization_preserves_temporalOrder
+File:
+  TemporalOrder.lean
+Status:
+  MATCH
+
+S1 statement:
+  Definition 24 — Represented reversible rearrangement path
+Lean interface:
+  ReversibleRearrangementPath
+File:
+  ReversibleExploration.lean
+Status:
+  MATCH
+Note:
+  Bidirectionally accessible represented steps; zero-step path included.
+
+S1 statement:
+  Definition 25 — Reversal and concatenation
+Lean interface:
+  ReversibleRearrangementPath.append / ReversibleRearrangementPath.reverse
+File:
+  ReversibleExploration.lean
+Status:
+  MATCH
+
+S1 statement:
+  Definition 26 — Reversible path length
+Lean interface:
+  ReversibleRearrangementPath.pathLength
+File:
+  ReversibleExploration.lean
+Status:
+  MATCH
+Note:
+  Represented step count.
+
+S1 statement:
+  Lemma 16 — Additivity of reversible path length
+Lean interface:
+  ReversibleRearrangementPath.pathLength_append
+File:
+  ReversibleExploration.lean
+Status:
+  MATCH
+
+S1 statement:
+  Lemma 17 — Reversal invariance of path length
+Lean interface:
+  ReversibleRearrangementPath.pathLength_reverse
+File:
+  ReversibleExploration.lean
+Status:
+  MATCH
+
+S1 statement:
+  Lemma 18 — Reversible paths remain within one reversible class
+Lean interface:
+  ReversibleRearrangementPath.endpoints_reversibleEquivalent / same_reversibleClass
+File:
+  ReversibleExploration.lean
+Status:
+  MATCH
+
+S1 statement:
+  Definition 27 — Reversible cycle
+Lean interface:
+  ReversibleCycle
+File:
+  Duration.lean
+Status:
+  MATCH
+
+S1 statement:
+  Lemma 19 — Accumulation under repeated reversible cycles
+Lean interface:
+  ReversibleCycle.pathLength_iterate
+File:
+  Duration.lean
+Status:
+  MATCH
+
+S1 statement:
+  Proposition 8 — Operational duration count
+Lean interface:
+  ReversibleRearrangementPath.pathLength plus pathLength_append/pathLength_reverse
+File:
+  ReversibleExploration.lean
+Status:
+  ENCODING
+Note:
+  Lean uses `pathLength` itself as the dimensionless operational duration count rather than introducing a duplicate `Nτ` symbol.
+
+S1 statement:
+  Definition 28 — Local elementary duration scale
+Lean interface:
+  LocalDurationScale / ReversibleRearrangementPath.accumulatedDuration
+File:
+  Duration.lean
+Status:
+  MATCH
+Note:
+  Positive metrical calibration.
+
+S1 statement:
+  Theorem 9 — Zero operational duration iff no resolved rearrangement occurs
+Lean interface:
+  ReversibleRearrangementPath.accumulatedDuration_eq_zero_iff_pathLength_eq_zero
+File:
+  Duration.lean
+Status:
+  MATCH
+Note:
+  Also packaged by `reversibleDuration_characterization`.
+
+S1 statement:
+  Lemma 20 — Additivity of reversible duration
+Lean interface:
+  ReversibleRearrangementPath.accumulatedDuration_append
+File:
+  Duration.lean
+Status:
+  MATCH
+
+S1 statement:
+  Lemma 21 — Reversal preserves accumulated duration
+Lean interface:
+  ReversibleRearrangementPath.accumulatedDuration_reverse
+File:
+  Duration.lean
+Status:
+  MATCH
+
+S1 statement:
+  Theorem 10 — More resolved executed change gives more duration
+Lean interface:
+  ReversibleRearrangementPath.accumulatedDuration_lt_of_pathLength_lt
+File:
+  Duration.lean
+Status:
+  MATCH
+
+S1 statement:
+  Corollary 5.1 — One missed resolved rearrangement
+Lean interface:
+  ReversibleRearrangementPath.accumulatedDuration_eq_add_step_of_pathLength_succ
+File:
+  Duration.lean
+Status:
+  MATCH
+
+S1 statement:
+  Definition 29 — Reversible physical clock
+Lean interface:
+  ReversibleClock / ReversibleClock.tickDuration
+File:
+  Duration.lean
+Status:
+  MATCH
+Note:
+  Physical construction; no existence assertion.
+
+S1 statement:
+  Theorem 11 — Duration accumulated by repeated clock cycles
+Lean interface:
+  ReversibleClock.durationAfterCycles_eq_nsmul / durationAfterCycles_strictMono
+File:
+  Duration.lean
+Status:
+  MATCH
+Note:
+  The formalization also proves strict monotonicity of the reading.
+
+S1 statement:
+  Definition 30 — Operational reversible duration parameter
+Lean interface:
+  OperationalDurationParameter / OperationalClock
+File:
+  Duration.lean
+Status:
+  MATCH
+Note:
+  `ReversibleClock.toOperationalClock` proves the represented clock supplies the abstract interface.
+
+S1 statement:
+  Operational-to-physical duration bridge
+Lean interface:
+  PhysicalDuration / ReversibleRearrangementPath.physicalDuration / coe_physicalDuration
+File:
+  PhysicalDurationEvolution.lean
+Status:
+  ENCODING
+Note:
+  `PhysicalDuration = ℝ≥0`; the bridge changes codomain but not the accumulated duration value. `physicalDuration_characterization` packages the conclusion.
+
+S1 statement:
+  Definition 31 — Autonomous effective duration evolution
+Lean interface:
+  AutonomousPhysicalDurationEvolution
+File:
+  PhysicalDurationEvolution.lean
+Status:
+  MATCH
+Note:
+  Effective assumption; nonnegative semigroup parameter.
+
+S1 statement:
+  Lemma 22 — Independence of the numerical duration origin
+Lean interface:
+  AutonomousPhysicalDurationEvolution.evolve_from_reached_state
+File:
+  PhysicalDurationEvolution.lean
+Status:
+  MATCH
+Note:
+  Semigroup form of origin-independence/continuation from a reached state.
+
+S1 statement:
+  Definition 32 — Continuous effective duration evolution
+Lean interface:
+  ContinuousAutonomousPhysicalDurationEvolution
+File:
+  PhysicalDurationEvolution.lean
+Status:
+  MATCH
+Note:
+  Effective continuity only.
+
+S1 statement:
+  Definition 33 — Generator of effective duration evolution
+Lean interface:
+  RightDifferentiableAutonomousPhysicalDurationEvolution / generator
+File:
+  PhysicalDurationEvolution.lean
+Status:
+  MATCH
+Note:
+  Right derivative is represented by `derivWithin` on `Set.Ici 0`.
+
+S1 statement:
+  Theorem 12 — Effective evolution equation
+Lean interface:
+  RightDifferentiableAutonomousPhysicalDurationEvolution.derivWithin_incremented_duration
+File:
+  PhysicalDurationEvolution.lean
+Status:
+  MATCH
+Note:
+  Also packaged by `physicalDurationGenerator_characterization`.
+
+S1 statement:
+  Reversibility does not require negative duration
+Lean interface:
+  ReversibleAutonomousPhysicalDurationEvolution / evolveEquiv / inverse_after_evolve / evolve_after_inverse
+File:
+  PhysicalDurationEvolution.lean
+Status:
+  MATCH
+Note:
+  The bundle `reversiblePhysicalDurationEvolution_characterization` exposes the two-sided inverse identities.
+
+S1 statement:
+  Corollary 6.1 — Energy generator in a Hamiltonian effective representation
+Lean interface:
+  No dedicated Lean theorem in the current Time layer
+File:
+  PhysicalDurationEvolution.lean / manuscript
+Status:
+  SCOPE
+Note:
+  The manuscript makes this conditional on additional Hamiltonian structure. Lean intentionally stops at the general duration generator and does not identify it with energy or a Hamiltonian.
+
+SUMMARY
+=======
+
+Numbered S1 items covered:
+  Definitions: 33 / 33
+  Lemmas: 22 / 22
+  Propositions: 2 / 2
+  Theorems: 10 / 10
+  Remarks: 1 / 1
+  Corollaries: 3 / 3
+
+Additional explicit interfaces:
+  Imported SBI boundary
+  Local record-formation semantics
+  Relational-domain semantics
+  Operational-to-physical duration bridge
+  Reversible state maps without negative duration
+
+Open semantic/deductive gaps:
+  none identified in this pass.
+
+Deliberate scope boundary:
+  Corollary 6.1, identifying the general duration generator with energy in a
+  Hamiltonian representation, is not a theorem of the current Time Lean layer.
+  This is intentional: the required Hamiltonian/symplectic or unitary structure
+  is additional effective physics and is stated as such in S1.

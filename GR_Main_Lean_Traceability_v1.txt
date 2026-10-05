@@ -1,0 +1,594 @@
+GR — Main manuscript to Lean traceability registry
+=================================================
+
+Purpose
+-------
+For every principal definition, lemma, proposition, theorem, imported
+classification, and explicit physical/effective bridge used in the GR
+manuscript, identify one Lean declaration (or a small public interface) that
+serves as its manuscript-facing formal counterpart.
+
+The registry is intentionally compact. Detailed semantic-fidelity judgments,
+verification methods, configuration control, and scope exclusions are recorded
+in `GR_Formal_Verification_Traceability_Matrix.md`.
+
+A manuscript-facing interface should be recognizable beside the corresponding
+main-text statement. Implementation helpers may sit below it, but the reader
+should not have to reconstruct the conceptual claim from unrelated Lean
+internals.
+
+Status convention
+-----------------
+MATCH     = manuscript statement and Lean interface have been checked and agree.
+ENCODING  = explicit semantic, representational, or physical bridge; its use is
+            checked, while physical adequacy remains conceptual.
+EXTERNAL  = imported standard mathematics represented by an explicit theorem
+            interface; Lean checks application but does not re-prove it.
+SCOPE     = manuscript interpretation or outlook deliberately outside the
+            present GR Lean theorem layer.
+CHECK     = plausible interface identified, but detailed comparison remains open.
+GAP       = no adequate manuscript-facing Lean interface identified.
+TODO      = interface identified, but dependency-report or manuscript cleanup
+            remains open.
+
+Baseline
+--------
+Lean commit:
+  9bbabb999a5c1cb2680b199a7337980b0eb488a8
+
+Conceptual source reviewed:
+  main GR(1).tex
+
+Conceptual source SHA-256:
+  05c2f725d36f6ff0a5e5e576dfdc5b403c8d9128f10d7785fc6f241b65740670
+
+CURRENT REGISTRY
+================
+
+Main-text statement:
+  Imported SBI relational/admissibility foundation
+Lean interface:
+  Imported SBI declarations, especially A1 invariance/support, persistence,
+  local persistence requirements, frustration, and reorganization interfaces
+File:
+  SBI/ via GR imports
+Status:
+  MATCH
+Note:
+  GR reuses the verified SBI formalization rather than introducing a second
+  substratum model.
+
+Main-text statement:
+  Imported reversible-duration structure from the Time companion paper
+Lean interface:
+  Time.ReversibleRearrangementPath / Time.LocalDurationScale /
+  accumulated-duration theorems
+File:
+  Time/Duration.lean and dependencies
+Status:
+  MATCH
+Note:
+  Positive physical duration is imported from Time; it is not derived from A2
+  alone inside GR.
+
+Main-text statement:
+  Causal propagation of relational depth n requires at least n represented
+  duration-bearing local advances
+Lean interface:
+  CausalPropagationProcess / depth_le_pathLength
+File:
+  GR/CausalPropagation.lean
+Status:
+  ENCODING
+Note:
+  Explicit bridge between relational propagation depth and the Time duration
+  representation.
+
+Main-text statement:
+  Proposition — finite causal propagation rate
+Lean interface:
+  CausalPropagationProcess.depth_times_stepDuration_le_duration /
+  HasFiniteRelationalDepthRateBound /
+  CausalPropagationProcess.hasFiniteRelationalDepthRateBound
+File:
+  GR/CausalPropagation.lean
+Status:
+  MATCH
+Note:
+  Formal result is the relational-depth inequality. Conversion to an effective
+  spatial speed c_adm uses an additional coarse-grained spatial increment in
+  the manuscript.
+
+Main-text statement:
+  Semantics of physically meaningful propagation-character change
+Lean interface:
+  PropagationChangeSemantics
+File:
+  GR/InertialPersistence.lean
+Status:
+  ENCODING
+
+Main-text statement:
+  Lemma — persistence of unconstrained propagation / structural Newton I
+Lean interface:
+  propagationChange_requires_relationalSupport /
+  noRelationalSupport_noPropagationChange /
+  UnconstrainedPersistentContinuation /
+  NewtonFirstLawStructural /
+  unconstrainedPersistentContinuation_implies_NewtonFirstLawStructural
+File:
+  GR/InertialPersistence.lean
+Status:
+  MATCH
+Note:
+  The Lean theorem remains pre-geometric. The coordinate statement dv/dtau=0
+  is a later effective representation.
+
+Main-text statement:
+  Operational equivalence of inertial observers
+Lean interface:
+  InertialEquivalenceSemantics / relEq_of_equivalent
+File:
+  GR/InertialSymmetry.lean
+Status:
+  ENCODING
+Note:
+  Homogeneity and isotropy are regime conditions; operational inertial
+  equivalence is bridged explicitly to canonical relational equivalence.
+
+Main-text statement:
+  Lemma — no operationally accessible absolute inertial state
+Lean interface:
+  inertialEquivalent_descriptors_agree /
+  NoAbsoluteInertialMarker /
+  inertialEquivalence_excludes_absoluteMarker
+File:
+  GR/InertialSymmetry.lean
+Status:
+  MATCH
+
+Main-text statement:
+  Causal accessibility is invariant under operationally equivalent inertial
+  redescription
+Lean interface:
+  CausalAccessibilitySemantics /
+  OperationalInertialRedescription /
+  causalAccessibility_eq_of_relEq /
+  operationalInertialRedescription_preservesCausalStructure /
+  PreLorentzInertialSymmetry /
+  operationalInertialRedescription_has_preLorentzSymmetry
+File:
+  GR/InertialSymmetry.lean
+Status:
+  MATCH / ENCODING
+Note:
+  The causal-accessibility semantics and operational redescription are explicit
+  inputs; the invariance results are derived from A1 through those interfaces.
+
+Main-text statement:
+  Standard classification of homogeneous/isotropic inertial kinematics with a
+  finite invariant causal speed
+Lean interface:
+  StandardLorentzClassification / LorentzClassificationInput / classify
+File:
+  GR/LorentzClassification.lean
+Status:
+  EXTERNAL
+
+Main-text statement:
+  Theorem — Lorentz symmetry of admissible inertial transformations
+Lean interface:
+  lorentz_of_standardClassification
+File:
+  GR/LorentzClassification.lean
+Status:
+  MATCH
+Note:
+  This is an application of explicitly imported standard mathematics, not a
+  re-proof of the classification theorem.
+
+Main-text statement:
+  Section-2 spacetime-kinematics synthesis
+Lean interface:
+  SpacetimeKinematicsResult / spacetimeKinematics_characterization
+File:
+  GR/KinematicsSynthesis.lean
+Status:
+  MATCH
+Note:
+  Structural Newton I is part of the synthesis but is not a premise of the
+  later Lorentzian-manifold construction.
+
+Main-text statement:
+  Smooth effective manifold representation and smooth coordinate redundancy
+Lean interface:
+  EffectiveGeometricRepresentation
+File:
+  GR/GeometricRepresentation.lean
+Status:
+  ENCODING
+Note:
+  HasEffectiveDifferentiableManifold is supplied as a coarse-grained regime
+  condition, not derived from A1–A3 alone.
+
+Main-text statement:
+  Bridge from Lorentz kinematics to Lorentzian effective causal geometry
+Lean interface:
+  LorentzianGeometryBridge
+File:
+  GR/GeometricRepresentation.lean
+Status:
+  ENCODING
+
+Main-text statement:
+  Lemma — effective Lorentzian neighborhood structure
+Lean interface:
+  lorentzianCausalStructure_of_lorentzResult /
+  lorentzianCausalStructure_of_standardClassification /
+  effectiveGeometry_bridge_and_coordinateInvariance
+File:
+  GR/GeometricRepresentation.lean
+Status:
+  MATCH
+Note:
+  The formal dependency uses the Lorentz result directly; Newton I is not a
+  premise of this geometric step.
+
+Main-text statement:
+  Lemma — coordinate equivalence from relational closure
+Lean interface:
+  coordinateEquivalent_descriptors_agree /
+  EffectiveGeometricRepresentation.CoordinateInvariant /
+  physicallyMeaningful_descriptor_is_coordinateInvariant
+File:
+  GR/GeometricRepresentation.lean
+Status:
+  MATCH
+
+Main-text statement:
+  Higher-order metric dynamics require independent continuation data
+Lean interface:
+  MetricClosureSemantics / higherOrder_requires_independent
+File:
+  GR/MetricClosure.lean
+Status:
+  ENCODING
+Note:
+  This is the explicit initial-data bridge used by the second-order closure
+  argument.
+
+Main-text statement:
+  Definition — closed local effective metric state
+Lean interface:
+  ClosedLocalMetricState / HasIndependentContinuationData
+File:
+  GR/MetricClosure.lean
+Status:
+  MATCH
+
+Main-text statement:
+  Lemma — second-order closure of metric dynamics
+Lean interface:
+  closedLocalMetricState_no_independentContinuation /
+  closedMetricState_excludes_irreducibleHigherOrder /
+  irreducibleHigherOrder_not_metricOnlyClosed
+File:
+  GR/MetricClosure.lean
+Status:
+  MATCH
+Note:
+  Only irreducible higher-order dependence is excluded. Higher derivatives
+  caused by eliminating additional state variables are outside the claim.
+
+Main-text statement:
+  Coarse-grained local balance relation
+Lean interface:
+  CoarseGrainedLocalBalance / balance
+File:
+  GR/LocalConservation.lean
+Status:
+  ENCODING
+
+Main-text statement:
+  Microscopic preservation maps to vanishing coarse-grained local source
+Lean interface:
+  PreservedQuantityBridge / preserved_source_free
+File:
+  GR/LocalConservation.lean
+Status:
+  ENCODING
+
+Main-text statement:
+  Lemma — local conservation structure
+Lean interface:
+  sourceFreeQuantity_is_locallyConserved /
+  preservedQuantity_is_locallyConserved /
+  HasLocalConservationStructure /
+  localBalance_has_conservationStructure
+File:
+  GR/LocalConservation.lean
+Status:
+  MATCH
+
+Main-text statement:
+  Effective stress-energy/source-tensor representation
+Lean interface:
+  EffectiveSourceTensorBridge
+File:
+  GR/StressEnergyBridge.lean
+Status:
+  ENCODING
+Note:
+  Tensoriality, symmetry, and the local-to-covariant conservation step are
+  explicit continuum representation inputs.
+
+Main-text statement:
+  Preserved quantity has an admissible conserved effective source
+Lean interface:
+  preservedQuantity_has_effectiveConservedSource /
+  HasAdmissibleEffectiveSource /
+  preservedQuantity_has_admissibleEffectiveSource
+File:
+  GR/StressEnergyBridge.lean
+Status:
+  MATCH
+
+Main-text statement:
+  GR-side structural premises relevant to Lovelock
+Lean interface:
+  EffectiveLovelockRegimeBridge /
+  EffectiveLovelockPremises /
+  effectiveLovelockPremises_of_closedEffectiveRegime
+File:
+  GR/EinsteinSynthesis.lean
+Status:
+  ENCODING / MATCH
+Note:
+  The premises are established as a GR-side object before the imported
+  Lovelock theorem is invoked.
+
+Main-text statement:
+  Standard four-dimensional Lovelock classification
+Lean interface:
+  StandardLovelockClassification / classify
+File:
+  GR/LovelockClassification.lean
+Status:
+  EXTERNAL
+
+Main-text statement:
+  Identification of GR structural predicates with Lovelock theorem hypotheses
+Lean interface:
+  LovelockRegimeBridge / lovelockInput_of_effectivePremises
+File:
+  GR/EinsteinSynthesis.lean
+Status:
+  ENCODING
+
+Main-text statement:
+  Lovelock geometric classification result
+Lean interface:
+  einsteinPlusCosmological_of_standardLovelock
+File:
+  GR/LovelockClassification.lean
+Status:
+  MATCH
+Note:
+  Application of imported standard mathematics after the complete input bundle
+  has been supplied.
+
+Main-text statement:
+  Effective source coupling and gravitational coupling parameter
+Lean interface:
+  EffectiveEinsteinCoupling
+File:
+  GR/EinsteinSynthesis.lean
+Status:
+  ENCODING
+Note:
+  kappa is an input of the effective coupling. Its empirical value is not
+  derived by the structural argument.
+
+Main-text statement:
+  Theorem — admissible coarse-grained geometry has Einstein-form field equation
+Lean interface:
+  admissibleCoarseGrainedGeometry_has_EinsteinForm
+File:
+  GR/EinsteinSynthesis.lean
+Status:
+  MATCH
+
+Main-text statement:
+  Final effective-GR characterization
+Lean interface:
+  effectiveGR_characterization
+File:
+  GR/Conclusions.lean
+Status:
+  MATCH
+
+Main-text statement:
+  Reconfiguration capacity as compatible configurational freedom under a
+  persistence-requirement family
+Lean interface:
+  CompatibleConfiguration / RequirementFamilyIncluded /
+  NoGreaterReconfigurationCapacity / StrictlyLowerReconfigurationCapacity /
+  ReconfigurationCapacityExhausted
+File:
+  GR/ConstraintCapacity.lean
+Status:
+  MATCH
+Note:
+  Capacity is ordered by inclusion. No scalar microscopic capacity is claimed.
+
+Main-text statement:
+  Constraint strengthening cannot increase compatible configurational freedom;
+  frustration exhausts the compatible family and continued persistence requires
+  reorganization
+Lean interface:
+  includedRequirements_noGreaterReconfigurationCapacity /
+  includedRequirements_strictlyLower_of_exclusion /
+  structuralFrustration_exhaustsReconfigurationCapacity /
+  structuralFrustration_capacityExhausted_and_reorganizationRequired
+File:
+  GR/ConstraintCapacity.lean
+Status:
+  MATCH
+
+Main-text statement:
+  Stronger persistence requirements cannot create new admissible transitions
+Lean interface:
+  ConstraintReachabilitySemantics / step_antitone
+File:
+  GR/ReachabilityBoundary.lean
+Status:
+  ENCODING
+Note:
+  This is the explicit dynamical monotonicity bridge of the reachability branch.
+
+Main-text statement:
+  Constraint strengthening cannot enlarge finite reachability and cannot restore
+  continuation after terminality
+Lean interface:
+  ConstrainedReachability /
+  constrainedReachability_of_includedRequirements /
+  NoGreaterReachabilityDomain /
+  includedRequirements_noGreaterReachabilityDomain /
+  TerminalUnderConstraints /
+  terminal_preserved_by_constraintStrengthening /
+  constraintStrengthening_characterization
+File:
+  GR/ReachabilityBoundary.lean / GR/Conclusions.lean
+Status:
+  MATCH
+
+Main-text statement:
+  Limiting reachability configuration
+Lean interface:
+  LimitingReachabilityConfiguration
+File:
+  GR/ReachabilityBoundary.lean
+Status:
+  MATCH
+Note:
+  Compatibility plus terminality only; no horizon or black-hole language is
+  built into the formal definition.
+
+Main-text statement:
+  Limiting configuration has no distinct reachable continuation
+Lean interface:
+  terminal_reachability_eq_self /
+  terminal_no_distinct_reachable /
+  limitingConfiguration_no_distinct_continuation /
+  limitingReachability_characterization
+File:
+  GR/ReachabilityBoundary.lean / GR/Conclusions.lean
+Status:
+  MATCH
+
+Main-text statement:
+  Overlap of reachability domains supports the smooth manifold regime; loss of
+  required overlap limits applicability
+Lean interface:
+  No dedicated theorem in the current GR layer
+File:
+  Manuscript Section 4
+Status:
+  SCOPE
+
+Main-text statement:
+  Loss of accessible record-forming transitions limits continued directed time
+Lean interface:
+  Underlying record/precedence structure is formalized in Time; no dedicated GR
+  theorem for this applicability step
+File:
+  Manuscript Section 4 / Time/
+Status:
+  SCOPE
+
+Main-text statement:
+  Limiting reachability configuration has the operational character of a horizon
+Lean interface:
+  No horizon-identification theorem
+File:
+  Manuscript Section 4
+Status:
+  SCOPE
+Note:
+  The formal endpoint is limiting reachability, not a geometric horizon theorem.
+
+Main-text statement:
+  Analytically continued black-hole interior/singularity need not correspond to
+  realized substratum states beyond a reachability boundary
+Lean interface:
+  No dedicated theorem
+File:
+  Manuscript Section 4
+Status:
+  SCOPE
+
+Main-text statement:
+  Dilution can fragment connected record precedence while local reversible
+  evolution persists
+Lean interface:
+  Underlying temporal distinction formalized in Time; cosmological application
+  not formalized as a GR theorem
+File:
+  Manuscript Section 4 / Time/
+Status:
+  SCOPE
+
+Main-text statement:
+  Localized energy may correspond to suppression of reconfiguration capacity
+Lean interface:
+  None by design
+File:
+  Manuscript Section 4
+Status:
+  SCOPE
+Note:
+  Explicitly conjectural. The reachability argument does not depend on it.
+
+Main-text statement:
+  Continuum approximation can fail when relational variation approaches the
+  intrinsic coarse-graining scale
+Lean interface:
+  No dedicated theorem
+File:
+  Manuscript Section 4
+Status:
+  SCOPE
+
+Main-text statement:
+  Quantum-gravity implication: quantizing an emergent metric need not by itself
+  identify the underlying microscopic degrees of freedom
+Lean interface:
+  No dedicated theorem required
+File:
+  Conclusions
+Status:
+  SCOPE
+Note:
+  Conditional effective-theory interpretation, not a no-go theorem for
+  quantized geometry.
+
+REGISTRY SUMMARY
+================
+
+The current GR Lean architecture intentionally contains four different kinds
+of manuscript-facing object:
+
+1. imported verified SBI/Time foundations;
+2. explicit physical/effective semantic bridges;
+3. imported standard mathematical classifications; and
+4. derived conclusions checked by Lean.
+
+Section-4 horizon, cosmological, energy, continuum-breakdown, and quantum-
+gravity interpretations are tracked explicitly as scope items rather than
+being allowed to appear as machine-verified consequences.
+
+The authoritative machine-derived architecture is generated by
+`GR/DependencyReport.lean`, `GR/RefinedGroupedReport.lean`, and
+`GR/ColoredDependencyReport.lean`. The refined grouped map, not a separately
+maintained hand-drawn graph, should be used for the manuscript dependency
+figure.

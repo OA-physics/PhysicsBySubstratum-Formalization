@@ -1,0 +1,832 @@
+SBI — S2 to Lean Traceability Registry
+========================================
+
+Purpose
+-------
+For every important Definition, Lemma, Proposition, and Theorem in S2,
+identify one Lean declaration that serves as its manuscript-facing interface.
+
+A manuscript-facing interface should be a Lean declaration whose statement
+or type can be placed beside the corresponding S2 statement and recognized
+as formalizing essentially the same mathematical claim.
+
+File field
+----------
+For each manuscript-facing Lean interface, record the project source file in
+which the declaration is defined.  This is the logical project filename
+(e.g. NetworkObjects.lean), independent of temporary version suffixes used
+during review.
+
+Status convention
+-----------------
+MATCH  = manuscript statement and Lean interface have been checked and agree.
+CHECK  = plausible interface identified, but statement/type correspondence
+         still requires detailed comparison.
+GAP    = no adequate manuscript-facing Lean interface currently identified.
+TODO   = interface identified, but dependency-report or manuscript cleanup is
+         still required.
+
+The purpose of this registry is semantic traceability, not merely name
+matching.  Helper declarations may sit below the interface declaration, but
+the manuscript statement should not have to be reconstructed from unrelated
+Lean implementation details.
+
+
+CURRENT FIRST-PASS REGISTRY
+===========================
+
+S2 statement:
+  Definition 1 — Operational relational connectivity
+Lean interface:
+  RelConnected
+File:
+  Substratum.lean
+Status:
+  MATCH
+
+
+S2 statement:
+  Lemma 1 — Connectivity of co-accessible domains
+Lean interface:
+  one_substratum
+File:
+  Substratum.lean
+Status:
+  MATCH
+
+
+S2 statement:
+  Theorem 1 — Substratum Theorem
+Lean interface:
+  substratum_theorem
+File:
+  Substratum.lean
+Status:
+  MATCH
+
+
+S2 statement:
+  Finite Operational Accessibility (FOA)
+Lean interface:
+  finite_operational_accessibility
+File:
+  NetworkCore.lean
+Status:
+  MATCH
+Note:
+  S2 should be updated to present FOA as derived from A2 plus operational
+  accessibility, rather than as an independent premise.
+  Audited: derived from operational accessibility plus A2 finite operational resolution.
+
+
+S2 statement:
+  Lemma 2 — Finite local mediation
+Lean interface:
+  finite_observer_local_mediation
+File:
+  NetworkOperational.lean
+Status:
+  MATCH
+Note:
+  Manuscript dependency list should explicitly include operational resolution of relational connectivity.
+
+
+S2 statement:
+Definition 2 — Direct relation
+Interface: DirectRelation / IsDirectRelation
+File: NetworkObjects.lean
+Status: MATCH
+Lean action: completed — migrated from Sigma to SigmaOp
+Manuscript action: none
+
+
+S2 statement:
+Definition 3 — Local relational conjunction
+Interface: LocalRelationalConjunction / IsLocalRelationalConjunction
+File: NetworkObjects.lean
+Status: MATCH
+Lean action: completed — conjunction membership now uses SigmaOp
+Manuscript action: none
+
+
+S2 statement:
+Definition 4 — Relational network representation
+Interface: ObserverNetwork
+File: NetworkObjects.lean
+Status: MATCH
+Lean action: none
+Checklist action:
+  replace IncidenceNetwork by ObserverNetwork as the manuscript-facing interface
+Note:
+  IncidenceNetwork is the generic implementation carrier.
+  ObserverNetwork supplies the manuscript semantics V, E, and iota.
+
+
+S2 statement:
+Theorem 2 — Relational Network Representation Theorem
+Interface: network_representation_theorem
+File: NetworkTheorem.lean
+Status: MATCH
+Lean action: none
+Manuscript action: none
+Note:
+  ObserverNetwork canonically supplies G_O; the theorem proves the
+  substantive finite incidence-network realization of every
+  observer-accessible connection in that network.
+
+
+S2 statement:
+Definition 5 — Local relational configuration
+Interface: OperationalContext
+File: Operational.lean
+Status: MATCH
+Lean action: none
+Manuscript action: none
+Note:
+  OperationalContext packages C, C(I(v)), restriction, A(I(v)),
+  and admissibility of restriction. Its independent LocalConfig type
+  and absence of a converse restriction principle faithfully encode
+  the manuscript's explicit absence of a local-to-global gluing
+  assumption.
+
+
+S2 statement:
+Definition 6 — Operational relational conjunction
+Interface: IsOperationalConjunction / OperationalConjunction
+File: Operational.lean
+Status: MATCH
+Lean action: none
+Manuscript action:
+  Add “Dependencies. FOA and Definition 3.” Done.
+
+
+S2 statement:
+Definition 7 — Operational local finiteness
+Interface: OperationallyLocallyFinite
+File: Operational.lean
+Status: MATCH
+Lean action: none
+Manuscript action:
+  Change dependencies to Definitions 4, 5, and 6. Done.
+Note:
+  Lean represents finiteness by finite covering lists rather than
+  cardinal notation; the content is equivalent.
+
+
+S2 statement:
+Lemma 3 — Finite incident set
+Interface:
+  operationalConjunction_incidentSet_is_finite
+File:
+  Operational.lean
+Status:
+  MATCH
+
+Lean action:
+  none, provided the current Operational.lean uses SigmaOp consistently.
+
+Manuscript action:
+  replace Sigma(a) by Sigma_op(a) in the proof and describe P_a as
+  containing the operationally distinguished participations. Done.
+
+Dependency-report action:
+  retain operationalConjunction_incidentSet_is_finite explicitly
+  in the manuscript-level spine. Done.
+
+
+S2 statement:
+Operational representation of local configurations
+Interface: LocalConfigurationsRepresentedByAlternatives
+File: Operational.lean
+Status: MATCH
+Lean action: none
+Manuscript action: none
+Note:
+  C.Alternative a represents the operational alternatives Ω_op(a);
+  the Lean statement requires exactly the surjection used in S2.
+
+
+S2 statement:
+Lemma 4 — Finite local configuration space
+Interface:
+  operationalConjunction_localConfigurationSpace_is_finite
+File:
+  Operational.lean
+Status:
+  MATCH
+Lean action:
+  none
+
+
+S2 statement:
+Proposition 4 — Operational local finiteness
+Interface:
+  operational_domain_is_locallyFinite
+File:
+  Operational.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  Add direct dependency line:
+  Definition 7, Lemma 3, and Lemma 4.
+
+
+S2 statement:
+Definition 8 — Persistent structures present in a configuration
+Interface:
+  PersistentStructuresPresent
+File:
+  Persistence.lean
+Status:
+  MATCH
+
+Lean action:
+  none
+
+Manuscript action:
+  none
+
+Note:
+  Lean represents persistence classes through arbitrary representatives
+  rather than a quotient type. Representative independence is proved by
+  persistenceClassPresent_rep_independent, so PersistentStructuresPresent
+  depends only on [R]_p, as required by S2.
+
+
+S2 statement:
+Definition 9 — Operational re-identification
+Interface:
+  OperationallyReidentified
+File:
+  Persistence.lean
+Status:
+  MATCH
+
+Lean action:
+  none
+
+Manuscript action:
+  none
+
+Note:
+  ReidentificationDistinction formalizes the semantic clause that the
+  accessible distinction D identifies R₁ and R₂ operationally as
+  realizations of the same persistence class. Representative independence
+  is proved separately.
+
+
+S2 statement:
+Definition 10 — Operational support
+Interface:
+  OperationalSupport
+File:
+  Persistence.lean
+Status:
+  MATCH
+
+Lean action:
+  none
+
+Manuscript action:
+  none
+
+Note:
+  OperationalSupport packages one finite FOA witness for the
+  re-identification distinction D. The corresponding network support
+  is exposed by supportConjunctions and IsSupportDirectRelation.
+  The explicit finite witness is a certified refinement guaranteed
+  by FOA, not an additional assumption.
+
+
+S2 statement:
+Lemma 5 — Finite operational support
+Interface:
+  operationallyReidentified_has_finiteNetworkSupport
+File:
+  Persistence.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  none
+Note:
+  operationallyReidentified_has_finiteSupport constructs the certified
+  OperationalSupport object; operationallyReidentified_has_finiteNetworkSupport
+  is the manuscript-facing result that additionally exposes the finite
+  conjunction/direct-relation network support.
+
+
+S2 statement:
+Definition 11 — Persistence-preserving local set
+Interface:
+  PersistencePreservingLocal
+Supporting semantic interface:
+  LocalPersistenceSemantics
+File:
+  PersistenceLocal.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  none
+Note:
+  LocalPersistenceSemantics formalizes Y and Pres_P(v;Y,Z).
+  PersistencePreservingLocal then represents U_P(v;Y) exactly as
+  admissibility ∧ preservation of operational re-identification.
+  Lean permits the predicate to be formed more generally than the
+  physically relevant setup stated in S2; this does not strengthen
+  the physical claim.
+
+S2 statement:
+Definition 12 — Relational adaptation
+Interface:
+  RelationalAdaptation
+File:
+  PersistenceLocal.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  Change dependency from Definition 9 to Definition 11. Done.
+Note:
+  The Lean structure records two persistence-preserving realizations
+  and requires a change in context, local configuration, or both.
+  It deliberately imposes no temporal ordering.
+
+
+S2 statement:
+Lemma 6 — Local propagation of relational adaptation
+Interface:
+  localPropagation_of_relationalAdaptation
+File:
+  PersistenceLocal.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  none
+Note:
+  ConjunctionDomainSemantics formalizes v ↦ S(v).
+  AdaptationInductionSemantics formalizes the operational meaning of
+  “adaptation at v₁ induces adaptation at v₂”.
+  Lean proves the stronger intermediate result that nonincidence is
+  not required for finite mediation itself.
+
+
+S2 statement:
+Definition 13 — Local persistence requirement
+Interface:
+  LocalPersistenceRequirement
+Supporting interface:
+  SatisfiesPersistenceRequirement
+File:
+  Frustration.lean
+Status:
+  MATCH
+Lean action:
+  Add representative invariance to LocalPersistenceSemantics and prove
+  persistencePreservingLocal_rep_independent. Done.
+Manuscript action:
+  none.
+
+
+S2 statement:
+Definition 14 — Local structural frustration
+Interface:
+  FiniteLocalStructuralFrustration
+Supporting interfaces:
+  SatisfiesAllRequirements
+  FiniteLocalCompatibility
+  finiteFrustration_iff_not_compatible
+File:
+  Frustration.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  none
+Note:
+  Lean represents the finite family by a List and explicitly excludes
+  the empty family. Individual satisfaction already includes local
+  admissibility, so the quantified Z has exactly the manuscript meaning
+  Z ∈ A(I(v)).
+
+S2 statement:
+Remark 2 — No universal compatibility principle
+Status:
+  EXPLANATORY — no Lean interface required
+Reason:
+  This is a scope/non-derivability statement, not a step used as
+  a premise downstream. Lean likewise contains no universal
+  compatibility assumption.
+Lean action:
+  none
+Manuscript action:
+  none
+
+S2 statement:
+Lemma 7 — Finite realization of local incompatibility
+Interface:
+  fullIncompatibility_has_finiteWitness
+Supporting interfaces:
+  FullRequirementFamily
+  FullLocalIncompatibility
+  IsFiniteSubfamily
+  IsFiniteFrustrationWitness
+File:
+  Frustration.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  none
+Note:
+  Lean factors the proof through a finite exhaustive list of the
+  whole local configuration space C(I(v)), rather than directly
+  through the admissible subset A(I(v)). For an operational
+  conjunction this stronger finiteness fact is already derived, so
+  no additional physical assumption is introduced.
+
+S2 statement:
+Definition 15 — Local persistence situation
+Interface:
+  LocalPersistenceSituation
+Supporting interface:
+  SituationPreservesRequirements
+File:
+  Frustration.lean
+Status:
+  MATCH
+Lean action:
+  completed — local admissibility is now an explicit field.
+Manuscript action:
+  Consider changing the dependency line to:
+  Definitions 5 and 13.
+
+
+S2 statement:
+Definition 16 — Relational reorganization
+Interface:
+  RelationalReorganization
+Supporting interfaces:
+  SamePersistenceRequirement
+  SameRequirementFamily
+  sameRequirement_satisfaction_iff
+File:
+  Frustration.lean
+Status:
+  MATCH
+Lean action:
+  completed — requirement identity is now invariant under persistence-equivalent representatives.
+Manuscript action:
+  none
+
+
+S2 statement:
+Lemma 8 — Frustration requires relational reorganization
+Interface:
+  frustration_requires_reorganization
+File:
+  Frustration.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  none
+Note:
+  Lean proves the slightly stronger result that the persistence-
+  requirement family itself must change semantically; a change of
+  local configuration alone cannot satisfy an unchanged frustrated
+  family.
+
+
+S2 statement:
+Definition 17 — Operational realization of relational reorganization
+Interface:
+  ReorganizationMediationSemantics.ReorganizationRealization
+Supporting interfaces:
+  realization_requires_reorganization
+  realization_is_mediation
+File:
+  Frustration.lean
+Status:
+  MATCH
+Lean action:
+  completed — an operational realization now formally implies
+  RelationalReorganization between its endpoint situations.
+Manuscript action:
+  none
+
+
+S2 statement:
+Lemma 9 — Local mediation of realized reorganization
+Interface:
+  reorganizationRealization_is_locallyMediated
+Supporting interface:
+  DirectMediationChain
+  mediationChain_is_direct
+File:
+  Frustration.lean
+Supporting file:
+  NetworkCore.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  none
+Note:
+  Current S2 source correctly uses Sigma_op.
+  An older compiled S2 PDF still contains the stale unrestricted-Sigma wording.
+
+
+S2 statement:
+Definition 18 — Recurrent structural frustration
+Interface:
+  RecurrentStructuralFrustration
+Supporting interface:
+  FrustrationReorganizationEpisode
+File:
+  Frustration.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  none
+Note:
+  The natural-number index enumerates recurrent episodes only.
+  Each episode may occur at a different local conjunction v.
+  No duration, temporal metric, or physical time parameter is introduced.
+
+
+S2 statement:
+Theorem 4 — Continual Reorganization Theorem
+Interface:
+  recurrentFrustration_requires_continualReorganization
+Supporting interface:
+  frustration_persistence_requires_localReorganization
+File:
+  Frustration.lean
+Status:
+  MATCH
+Core verified implication:
+  frustration + continued persistence
+    → relational reorganization required
+Locality:
+  operational realization + A2
+    → DirectMediationChain
+Lean action:
+  none required for correctness.
+Architecture note:
+  Definition 18 currently packages an already-realized reorganization.
+  Consider separating recurrence-of-frustration from realization in a
+  later cleanup so the linchpin implication is syntactically as well as
+  inferentially unmistakable.
+Manuscript action:
+  none required for semantic agreement.
+
+
+S2 statement:
+Definition 19 — Admissible deformation
+Interface:
+  AdmissibleDeformation
+Supporting interface:
+  ConfigurationChangeSemantics.AdmissibleStep
+File:
+  Deformation.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  none
+Note:
+  Lean represents finite admissible reachability inductively.
+  The refl constructor gives the zero-step deformation and step
+  gives finite composition. No duration or temporal order is introduced.
+
+
+S2 statement:
+Definition 20 — Persistence-preserving admissible deformation
+Interface:
+  PersistencePreservingDeformation
+Supporting interfaces:
+  persistencePreservingDeformation_is_admissible
+  persistencePreservingDeformation_endpoints_present
+File:
+  Deformation.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  none
+Note:
+  Persistence is checked across every successive pair.
+  The zero-step case requires actual presence of the persistent identity.
+  The deformation therefore adds persistence information to an
+  AdmissibleDeformation without introducing temporal duration.
+
+
+S2 statement:
+Definition 21 — Property essential to operational re-identification
+Interface:
+  EssentialToReidentification
+File:
+  Deformation.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  none
+Note:
+  The codomain is completely unrestricted.
+  Essentiality is necessary, not sufficient, for operational
+  re-identification. The representative R is semantically harmless
+  because OperationallyReidentified is already representative-independent.
+
+
+S2 statement:
+Theorem 5 — Realization Independence Theorem
+Interface:
+  realization_independence
+Supporting interfaces:
+  EssentialToReidentification
+  PersistencePreservingDeformation
+  PersistencePreservedAlong
+File:
+  Deformation.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  none
+Note:
+  PersistencePreservedAlong is indexed by the same AdmissibleDeformation
+  whose persistence it certifies. The Lean proof follows the manuscript
+  stepwise: essentiality gives equality across each successive pair, and
+  transitivity gives equality of endpoint property values.
+
+
+S2 statement:
+Definition 22 — Context-preserving local deformation
+Interface:
+  ContextPreservingLocalDeformation
+Supporting interfaces:
+  LocalDeformationSemantics
+  ContextPreservingLocalStep
+  ContextPreservedAlong
+  contextPreservingLocalDeformation_is_admissible
+File:
+  Deformation.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  none
+Note:
+  The locality/context-preservation certificate is indexed by the
+  same AdmissibleDeformation it qualifies. Every constituent step
+  must be admissible, confined to Ω, and leave the outside relational
+  context unchanged. The zero-step case is included.
+
+
+S2 statement:
+Definition 23 — Local non-eliminability
+Interface:
+  LocallyNonEliminable
+File:
+  Deformation.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  none
+Note:
+  Lean explicitly includes Q(X)=q and then quantifies over every
+  context-preserving local deformation from X. No persistence-
+  preserving condition is imposed on those deformations.
+
+
+S2 statement:
+Definition 24 — Operational re-identifiability at a configuration
+Interface:
+  OperationallyReidentifiableAt
+File:
+  Deformation.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  none
+Note:
+  The existential witness Y makes operational re-identifiability
+  non-vacuous. The predicate uses the full Definition 9 notion of
+  operational re-identification, not mere presence of the structure.
+
+
+S2 statement:
+Definition 25 — Persistent relational defect
+Interface:
+  PersistentRelationalDefect
+Supporting interfaces:
+  OperationallyReidentifiableAt
+  EssentialToReidentification
+  LocallyNonEliminable
+File:
+  Deformation.lean
+Status:
+  MATCH
+Lean action:
+  none
+Manuscript action:
+  none
+Note:
+  q = Q(X) is contained in LocallyNonEliminable rather than duplicated
+  in PersistentRelationalDefect. OperationallyReidentifiableAt guarantees
+  that the persistent identity is genuinely represented at X.
+
+
+S2 statement:
+Theorem 6 — Structural characterization of persistent relational defects
+Interface:
+  persistentRelationalDefect_characterization
+File:
+  Defects.lean
+Status:
+  MATCH
+Direct conceptual dependencies:
+  Lemma 5 — finite operational support
+  Theorem 5 — Realization Independence Theorem
+  Definition 25 — Persistent relational defect
+Lean action:
+  none
+Manuscript action:
+  none
+Note:
+  FOA is derived internally rather than supplied as an additional
+  theorem hypothesis. The theorem returns the same three conclusions
+  as the manuscript directly, without an intermediate conceptual
+  packaging object.
+
+S2 statement:
+Remark 3 — Relation to topological defects
+Status:
+  EXPLANATORY — no Lean interface required
+Reason:
+  Topology is presented as one possible realization of the already
+  formalized deformation obstruction. No topological structure is
+  assumed or used in any preceding proof.
+Lean action:
+  none
+Manuscript action:
+  none
+
+IMMEDIATE FOLLOW-UP ITEMS
+=========================
+
+1. Compare each CHECK entry statement-by-statement with S2 and change its
+   status to MATCH only after semantic agreement has been established.
+
+2. Inspect Definition 5 / OperationalContext carefully.  Decide whether the
+   broad context structure is an acceptable manuscript-facing interface or
+   whether a narrower declaration should be introduced.
+
+3. Add the following to the retained manuscript dependency spine:
+      operationalConjunction_incidentSet_is_finite
+      operationalConjunction_localConfigurationSpace_is_finite
+
+4. Update S2 so that finite operational accessibility is presented as
+   derived from A2 plus operational accessibility.
+
+5. Reconcile the S2 proof/dependency text for Lemma 7 with the actual Lean
+   proof of fullIncompatibility_has_finiteWitness.  In particular, remove or
+   replace the stale “Corollary ??” reference.
+
+6. Continue the audit sequentially.  Do not promote an entry from CHECK to
+   MATCH merely because the names correspond; compare the actual formal type
+   with the manuscript statement.
+
+Working principle
+-----------------
+physical principle
+    -> mathematical formulation
+    -> manuscript proof step
+    -> Lean manuscript-facing interface
+    -> kernel-checked proof
+    -> auditable dependency structure
