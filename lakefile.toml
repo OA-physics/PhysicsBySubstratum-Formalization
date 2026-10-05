@@ -1,0 +1,14 @@
+name = "SBILeanProject"
+version = "0.1.0"
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+rev = "v4.33.1"
+defaultTargets = ["sbileanproject"]
+
+[[lean_lib]]
+name = "SBILeanProject"
+
+[[lean_exe]]
+name = "sbileanproject"
+root = "Main"
