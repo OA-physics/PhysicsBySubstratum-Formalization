@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this formalization, please cite the archived release DOI once available."
+title: "Physics by Substratum: Lean 4 Formalization"
+type: software
+authors:
+  - family-names: Axelsson
+    given-names: Oskar
+    orcid: "https://orcid.org/0000-0003-3209-7241"
+repository-code: "https://github.com/OA-physics/PhysicsBySubstratum-Formalization"
