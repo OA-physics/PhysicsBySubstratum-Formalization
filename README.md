@@ -61,4 +61,9 @@ A `CITATION.cff` file is included for repository citation. A versioned archival 
 
 ## License
 
-No license has yet been assigned to this publication repository. Until a license is selected, normal copyright restrictions apply.
+This repository uses split licensing appropriate to its mixed software and scientific-documentation content:
+
+- **Lean source code and software/build/CI configuration** are licensed under the **MIT License**; see `LICENSE`.
+- **Documentation, traceability matrices, explanatory notes, and manuscript-facing dependency-map documentation** are licensed under the **Creative Commons Attribution 4.0 International License (CC BY 4.0)**; see `LICENSE-DOCUMENTATION`.
+
+The licences govern the copyrighted expression contained in this repository. They do not by themselves determine ownership of the underlying physical ideas, mathematical propositions, or scientific claims.
