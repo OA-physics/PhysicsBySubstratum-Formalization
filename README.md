@@ -8,6 +8,8 @@ The present formal development covers three connected parts of the programme:
 - **Time and duration** — the formal structure associated with *The Structure of Time*
 - **Spacetime / GR consequences** — the formal structure associated with *The Structure of Spacetime*
 
+The companion Schrödinger manuscript is not represented by a separate Lean development because its main argument is a physical reconstruction using established mathematical results rather than a chain of new formal propositions of the kind checked here.
+
 The repository is intended to make the deductive structure inspectable independently of the prose manuscripts. The Lean development checks deductions made from the encoded assumptions. It does **not** establish the physical truth of the assumptions, and it does not by itself establish that a chosen formal encoding is the unique physical interpretation of a conceptual statement. The traceability documents therefore distinguish physical axioms, semantic encodings, definitions, derived results, and machine-checked proofs.
 
 ## Repository structure
