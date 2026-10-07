@@ -57,7 +57,7 @@ The verification matrices should be read together with the Lean source when asse
 
 ## Citation and archived snapshot
 
-A `CITATION.cff` file is included for repository citation. A versioned archival DOI will be added when the submission snapshot is deposited in Zenodo.
+Version **1.0.0** is archived in Zenodo with DOI **10.5281/zenodo.23205220**. A `CITATION.cff` file is included with the corresponding citation metadata.
 
 ## License
 
