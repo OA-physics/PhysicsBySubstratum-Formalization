@@ -1,9 +1,12 @@
 cff-version: 1.2.0
-message: "If you use this formalization, please cite the archived release DOI once available."
+message: "If you use this formalization, please cite the archived Zenodo release."
 title: "Physics by Substratum: Lean 4 Formalization"
 type: software
 authors:
   - family-names: Axelsson
     given-names: Oskar
     orcid: "https://orcid.org/0000-0003-3209-7241"
+version: "1.0.0"
+date-released: "2026-10-06"
+doi: "10.5281/zenodo.23205220"
 repository-code: "https://github.com/OA-physics/PhysicsBySubstratum-Formalization"
